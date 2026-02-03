@@ -1,0 +1,4 @@
+2026-02-03 18:31:17,981 [main] INFO  base.BaseTest - Base URI set to Fake Store API
+2026-02-03 18:31:17,990 [main] INFO  base.BaseTest - ===== Starting GET All Users Test =====
+2026-02-03 18:31:19,320 [main] INFO  base.BaseTest - Response status code: 200
+2026-02-03 18:31:19,321 [main] INFO  base.BaseTest - ===== GET All Users Test Passed =====

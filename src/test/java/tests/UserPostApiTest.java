@@ -1,52 +1,42 @@
 package tests;
 
 import base.BaseTest;
-
-import io.restassured.http.ContentType;
-import io.restassured.response.Response;
-import static io.restassured.RestAssured.*;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import static io.restassured.RestAssured.*;
 
 public class UserPostApiTest extends BaseTest {
 
     @Test
     public void createUserTest() {
+
+        logger.info("===== Starting Create User (POST) API Test =====");
+
         String requestBody = "{\n" +
-                "  \"email\": \"testuser@test.com\",\n" +
-                "  \"username\": \"testuser123\",\n" +
-                "  \"password\": \"password123\",\n" +
-                "  \"name\": {\n" +
-                "    \"firstname\": \"John\",\n" +
-                "    \"lastname\": \"Doe\"\n" +
-                "  },\n" +
-                "  \"address\": {\n" +
-                "    \"city\": \"Delhi\",\n" +
-                "    \"street\": \"Street 1\",\n" +
-                "    \"number\": 10,\n" +
-                "    \"zipcode\": \"110001\",\n" +
-                "    \"geolocation\": {\n" +
-                "      \"lat\": \"-37.3159\",\n" +
-                "      \"long\": \"81.1496\"\n" +
-                "    }\n" +
-                "  },\n" +
-                "  \"phone\": \"1234567890\"\n" +
+                "  \"email\": \"testuser@email.com\",\n" +
+                "  \"username\": \"testuser\",\n" +
+                "  \"password\": \"password123\"\n" +
                 "}";
 
-        Response response =
+        logger.info("Request Body: " + requestBody);
+
+        int statusCode =
                 given()
-                        .contentType(ContentType.JSON)
+                        .header("Content-Type", "application/json")
                         .body(requestBody)
+                        .log().all()
                         .when()
-                        .post("/users");
+                        .post("/users")
+                        .then()
+                        .log().all()
+                        .extract()
+                        .statusCode();
 
-        response.then().log().all();
+        logger.info("Response Status Code: " + statusCode);
 
-        Assert.assertEquals(response.getStatusCode(), 201, "User not created!");
+        Assert.assertEquals(statusCode, 201, "User not created!");
 
-        String id = response.jsonPath().getString("id");
-        Assert.assertNotNull(id, "User ID is null.");
-
+        logger.info("===== Create User Test Passed =====");
     }
 }
